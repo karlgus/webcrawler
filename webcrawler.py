@@ -6,12 +6,17 @@ import re
 import time
 
 
-def openURL(url):
-    pass
-
+def openURL(url,path="/"):
+    conn = http.client.HTTPConnection(url)
+    conn.request("GET",path)
+    request = conn.getresponse()
+    pagehtml = request.read()
+    conn.close()
+    return pagehtml
 
 class Link:
-    
+    '''This class will contain information about link object'''
+
     def __init__(self,url,title):
         self.url = url
         self.title = title
@@ -24,4 +29,4 @@ class Link:
 
 
 if __name__ == '__main__':
-    
+    pass
