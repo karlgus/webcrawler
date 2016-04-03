@@ -32,6 +32,11 @@ class Link:
 
 if __name__ == '__main__':
     url = 'www.hd.se'
-    data = openURL('www.hd.se')
+    data = openURL("http://www.hd.se")
+
+    dom = htmldom.HtmlDom("www.hd.se").createDom()
+    a = dom.find("a")
+    for link in a:
+        print(link.attr("href"))
 
 
