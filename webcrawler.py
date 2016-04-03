@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
+from htmldom import htmldom
+
 import http.client
-import htmldom
 import re
 import time
 
@@ -20,13 +21,17 @@ class Link:
     def __init__(self,url,title):
         self.url = url
         self.title = title
+        self.linkstore = [url]
 
     def add_link_to_linkstore(self):
         pass
 
     def get_linkstore(self):
-        pass
+        return self.linkstore
 
 
 if __name__ == '__main__':
-    pass
+    url = 'www.hd.se'
+    data = openURL('www.hd.se')
+
+
