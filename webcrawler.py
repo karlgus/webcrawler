@@ -15,13 +15,13 @@ def getPage(url):
 class Link:
     '''This class will contain information about link object'''
 
-    def __init__(self,url,title):
+    def __init__(self,url,*title):
         self.url = url
-        self.title = title
+        #self.title = title
         self.linkstore = [url]
 
-    def add_link_to_linkstore(self):
-        pass
+    def add_link_to_linkstore(self, url):
+        self.linkstore.append(url)
 
     def get_linkstore(self):
         return self.linkstore
@@ -30,47 +30,35 @@ class Link:
 if __name__ == '__main__':
 
 
-#link_targets = [link.attrib.get('href','') for link in doc.cssselect('a')]
-
-    #url = 'http://www.hd.se'
-    #dom = htmldom.HtmlDom({0}).createDom().format(url)
-    #dom = htmldom.HtmlDom("http://www.hd.se").createDom()
-    #a = dom.find( "a" )
-    #links =  []
-    #for link in a:
-    #    print(link.attr("href"))
-    #    links.append(link.attr("href"))
-
-    #link = [link.attr("href") for link in a]
-
-    #path = []
-    #httpsurl = []
-    #http = []
-
-    #for url in link:
-    #    if re.match("^/",url):
-    #        path.append(url)
-    #    if re.match("^https",str(url)):
-    #        httpsurl.append(url)
-    #    if re.match("^http://",str(url)):
-    #        http.append(url)
-
-    #print(http)
-
     links = getPage('http://www.hd.se')
-    counter = 0
-    conf = True
-    while conf:
-        print(counter)
-        if counter == 2:
-            conf = False
-        print(conf)
-        for l in links:
-            #Controlling the new links
-            if re.match("^/",l):
-                print("This will be the path of the url: {0}".format(l))
-                newurl = 'http://hd.se' + l
-                print(newurl)
-            print(counter)
-            counter += 1
+    internal_links = ['/']
+
+    for i in range(1):
+        time.sleep(1)
+        print('i = {0}'.format(i))
+        links = {i:getPage('http://hd.se' + internal_links[i-1][i])}
+        print(links)
+        for internal in links:
+            #print(internal)
+            #if re.match('(hd.se)',internal) == True or re.match('^/',internal):
+            if re.match('^/',internal):
+                internal_links.append(internal)
+
+    print(internal_links)
+
+    #counter = 0
+    #conf = True
+    #while conf:
+    #    print(counter)
+    #    if counter == 2:
+    #        conf = False
+    #    print(conf)
+    #    for l in links:
+    #        #Controlling the new links
+    #        if re.match("^/",l):
+    #            print("This will be the path of the url: {0}".format(l))
+    #            newurl = 'http://hd.se' + l
+    #            print(newurl)
+    #        print(counter)
+    #        counter += 1
 
