@@ -10,7 +10,7 @@ def getPage(url):
     dom = htmldom.HtmlDom(url).createDom()
     #find tag a
     a = dom.find("a")
-    return set([link.attr("href") for link in a])
+    return [link.attr("href") for link in a]
 
 class Link:
     '''This class will contain information about link object'''
@@ -30,21 +30,24 @@ class Link:
 if __name__ == '__main__':
 
 
-    links = getPage('http://www.hd.se')
+    links = getPage('http://www.expressen.se')
     internal_links = ['/']
+    print(links)
+    link = {0:getPage('http://www.expressen.se' + internal_links[0])}
 
-    for i in range(1):
-        time.sleep(1)
-        print('i = {0}'.format(i))
-        links = {i:getPage('http://hd.se' + internal_links[i-1][i])}
-        print(links)
-        for internal in links:
-            #print(internal)
-            #if re.match('(hd.se)',internal) == True or re.match('^/',internal):
-            if re.match('^/',internal):
-                internal_links.append(internal)
 
-    print(internal_links)
+#    for i in range(1):
+#        time.sleep(1)
+#        print('i = {0}'.format(i))
+#        links = {i:getPage('http://www.hd.se' + internal_links[i-1][i])}
+#        print(links)
+#        for internal in links:
+#            #print(internal)
+#            #if re.match('(hd.se)',internal) == True or re.match('^/',internal):
+#            if re.match('^/',internal):
+#                internal_links.append(internal)
+
+#    print(internal_links)
 
     #counter = 0
     #conf = True
