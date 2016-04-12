@@ -10,7 +10,10 @@ import time
 #    unique_link = []
 #    [unique_link.append(path) for links in link if links not in unique_link]
 
-def getPage(url,maxdepth=3):
+def getPage(url,currentdepth):
+    print(currentdepth)
+    if currentdepth > 3:
+        return
     dom = htmldom.HtmlDom(url).createDom()
     #find tag a
     a = dom.find("a")
@@ -19,11 +22,13 @@ def getPage(url,maxdepth=3):
     [unique_link.append(path) for path in link if path not in unique_link]
     currentdepth = 0
 
+
+
     for path in unique_link:
-        currentdepth =+1
-        getPage(url)
-        if currentdepth == maxdepth:
-            break
+        currentdepth = currentdepth + 1
+        if re.match("^/",path):
+            getPage(url,currentdepth)
+            print(path)
     return unique_link
     #return [link.attr("href") for link in a]
 
@@ -47,15 +52,15 @@ if __name__ == '__main__':
     internal_links = ['/']
     #print(links)
     url = 'http://www.expressen.se'
-    link = getPage(url + internal_links[0])
-    print(link)
-    currentdepth = 0
-    for path in link:
-        if re.match("^/",path):
-            internal_links.append(url+path)
-            getPage(url + path)
-            currentdepth += 1
-            print(internal_links, currentdepth)
+    link = getPage(url + internal_links[0],3)
+#    print(link)
+#    currentdepth = 0
+#    for path in link:
+#        if re.match("^/",path):
+#            internal_links.append(url+path)
+#            getPage(url + path)
+#            currentdepth += 1
+#            print(internal_links, currentdepth)
 
 
 #    for i in range(2):
