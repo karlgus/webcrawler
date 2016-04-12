@@ -35,14 +35,14 @@ if __name__ == '__main__':
     #links = getPage('http://www.expressen.se')
     internal_links = ['/']
     #print(links)
-
-    link = getPage('http://www.expressen.se' + internal_links[0])
+    url = 'http://www.expressen.se'
+    link = getPage(url + internal_links[0])
     print(link)
-    #links = []
-    #[links.append(item) for item in link if item not in links]
-    #for path in links:
-    #    if re.match('^/',path):
-    #        print(path)
+
+    for path in link:
+        if re.match("^/",path):
+            internal_links.append(url+path)
+            getPage(url + path)
 
 
 #    for i in range(2):
