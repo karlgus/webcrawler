@@ -1,36 +1,44 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from htmldom import htmldom
-
-
 import re
 import time
+import sys
 
-#def unique_links(links):
-#    unique_link = []
-#    [unique_link.append(path) for links in link if links not in unique_link]
+link = []
 
-def getPage(url,currentdepth):
-    print(currentdepth)
-    if currentdepth > 3:
-        return
-    dom = htmldom.HtmlDom(url).createDom()
-    #find tag a
-    a = dom.find("a")
-    link = [link.attr("href") for link in a]
-    unique_link = []
-    [unique_link.append(path) for path in link if path not in unique_link]
-    currentdepth = 0
+def getPage(baseurl,currentdepth,urlpath=None):
+	time.sleep(0.5)
+	print("The currentdepth is: {0}".format(currentdepth))
+	if currentdepth > 1:
+		print(currentdepth)
+		sys.exit()
+
+	if urlpath == None:
+		tmpurl = baseurl
+	else:
+		tmpurl = baseurl + urlpath
+		print("the new tmpurl is: {0}".format(tmpurl))
+	time.sleep(1)
+	dom = htmldom.HtmlDom(tmpurl).createDom()
+
+	a = dom.find("a")
+
+	tmpLink = [tmpLink.attr("href") for tmpLink in a]
+
+	unique_link = []
+	# Adding new path from tmpLink if it not exist in unique_link already and if it's not in link that is the final variable to store all the links in
+	[unique_link.append(path) for path in tmpLink if path not in unique_link and path not in link]
 
 
-
-    for path in unique_link:
-        currentdepth = currentdepth + 1
-        if re.match("^/",path):
-            getPage(url,currentdepth)
-            print(path)
-    return unique_link
-    #return [link.attr("href") for link in a]
+	print("This link is now followed: {0}".format(tmpurl))
+	for path in unique_link:
+		if re.match("^/",path):
+			link.append(path)
+			print(link)
+			print("The next link to follow is {0}{1}".format(baseurl,path))
+			getPage(baseurl,currentdepth,path)
+		currentdepth=currentdepth+1
 
 class Link:
     '''This class will contain information about link object'''
@@ -47,51 +55,4 @@ class Link:
         return self.linkstore
 
 if __name__ == '__main__':
-
-    #links = getPage('http://www.expressen.se')
-    internal_links = ['/']
-    #print(links)
-    url = 'http://www.expressen.se'
-    link = getPage(url + internal_links[0],3)
-#    print(link)
-#    currentdepth = 0
-#    for path in link:
-#        if re.match("^/",path):
-#            internal_links.append(url+path)
-#            getPage(url + path)
-#            currentdepth += 1
-#            print(internal_links, currentdepth)
-
-
-#    for i in range(2):
-#        time.sleep(1)
-#        print('i = {0}'.format(i))
-#        links = {i:getPage('http://aftonbladet.se' + internal_links[i-1][0])}
-#    for i in range(1):
-#        time.sleep(1)
-#        print('i = {0}'.format(i))
-#        links = {i:getPage('http://www.hd.se' + internal_links[i-1][i])}
-#        print(links)
-#        for internal in links:
-#            print(internal)
-#            #if re.match('(hd.se)',internal) == True or re.match('^/',internal):
-#            if re.match('^/',internal):
-#                internal_links.append(internal)
-
-#    print(internal_links)
-
-    #counter = 0
-    #conf = True
-    #while conf:
-    #    print(counter)
-    #    if counter == 2:
-    #        conf = False
-    #    print(conf)
-    #    for l in links:
-    #        #Controlling the new links
-    #        if re.match("^/",l):
-    #            print("This will be the path of the url: {0}".format(l))
-    #            newurl = 'http://hd.se' + l
-    #            print(newurl)
-    #        print(counter)
-    #        counter += 1
+	getPage("http://www.norran.se",0)
